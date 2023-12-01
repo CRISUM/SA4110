@@ -142,8 +142,8 @@ def main():
     model = create_model()
     print(model.summary())
 
-    # model.fit(x=x_train/255, y=y_train, epochs=15)
-    hist = model.fit(datagen.flow(x_train/255, y_train, batch_size=32), epochs=50, validation_data = (x_test,y_test))
+    model.fit(x=x_train/255, y=y_train, epochs=50)
+    # hist = model.fit(datagen.flow(x_train/255, y_train, batch_size=32), epochs=50, validation_data = (x_test,y_test))
     # plot(hist)
 
     

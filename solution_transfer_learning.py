@@ -143,9 +143,7 @@ def main():
     print(model.summary())
 
     # model.fit(x=x_train/255, y=y_train, epochs=15)
-    hist = model.fit(datagen.flow(x_train/255, y_train, batch_size=32), epochs=50, validation_data = (x_test,y_test))
-    # plot(hist)
-
+    model.fit(datagen.flow(x_train/255, y_train, batch_size=32), epochs=10)
     
     model.save('mnist_saved_model/')
     model = tf.keras.models.load_model('mnist_saved_model')
