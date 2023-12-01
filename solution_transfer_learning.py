@@ -5,10 +5,10 @@ import os
 import string
 from PIL import Image
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from sklearn.model_selection import train_test_split
 
 # transfer learning
 from tensorflow.keras.applications import MobileNet
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
 from tensorflow.keras.models import Model
 
@@ -130,6 +130,9 @@ def main():
     x_train, y_train = read_img_data('train/')
     x_test, y_test = read_img_data("test/")
 
+    # 二次分割训练集
+    x_train,x_val,y_train,y_val = train_test_split(x_train,y_train,test_size=0.1,stratify=y_train)
+
     datagen = ImageDataGenerator(
     rotation_range=10,
     width_shift_range=0.1,
@@ -143,8 +146,9 @@ def main():
     print(model.summary())
 
     # model.fit(x=x_train/255, y=y_train, epochs=15)
-    model.fit(datagen.flow(x_train/255, y_train, batch_size=32), epochs=10)
-    
+    hist = model.fit(datagen.flow(x_train/255, y_train, batch_size=32), epochs=10, validation_data=(x_val, y_val))
+    plot(hist)
+
     model.save('mnist_saved_model/')
     model = tf.keras.models.load_model('mnist_saved_model')
     
